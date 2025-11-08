@@ -216,10 +216,10 @@
       });
 
       $('#clearBtn').on('click', function(){
-        $("#copyBtn").fadeOut(300);
-        $('#inputText').val('');
-        $('#output').text('').fadeOut(300);
         $("#resultMsg").fadeOut(300);
+        $("#copyBtn").slideUp(300);
+        $('#output').text('').slideUp(300);
+        $('#inputText').val('');
       });
 
       $('#copyBtn').on('click', function(){
@@ -229,7 +229,7 @@
             return;
         }
         navigator.clipboard.writeText(out).then(function(){
-          $("#noText").fadeIn(300).text("Text has been copied!").delay(2000).fadeOut(300);
+          $("#noText").slideDown(300).text("Text has been copied!").delay(2000).slideUp(300);
         }, function(){
           alert('Copy failed! Try to select the text and copy it manually');
         });
