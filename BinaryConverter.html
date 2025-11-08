@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <title>Binary Converter With JQuery</title>
+  <style>
+    
+    *{
+        font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    }
+    body{
+        background-color: #030b17;
+        color: #d8e9ff;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    h1{
+        font-size:24px;
+        text-align: center;
+        margin-bottom:14px;
+        text-shadow: 0 0 10px #00aaff;
+
+    }
+    label{
+      font-size: 14px;
+      color: #9ccfff;
+    }
+    textarea{
+        width:100%;
+        box-sizing:border-box;
+        padding:14px;
+        font-size:15px;
+        line-height:1.4;
+        background:#0e1a28;
+        color:#dff6ff;
+        border:1px solid #045c9f;
+        border-radius: 6px;
+        margin-top: 10px;
+        outline:none;
+        transition:0.25s;
+    }
+    textarea:focus{
+        box-shadow: 0 0 12px #009dff;
+        border-color:#00aaff;
+    }
+    #inputText{
+        background-color: #373737;
+        color: #fff;
+        border-radius: 5px;
+        border:1px solid #045c9f;
+        margin-top: 7px;
+    }
+    .row{
+        display:flex;
+        gap:8px;
+        margin-top:14px
+    }
+    button{
+        flex:1;
+        padding:10px 12px;
+        font-size:14px;
+        cursor:pointer;
+        background: linear-gradient(135deg, #0066ff, #00d9ff);
+        border:none;
+        border-radius:6px;
+        color:#fff;
+        font-weight:500;
+        transition:0.25s;
+    }
+
+     button:hover{
+        box-shadow:0 0 15px #00aaff;
+        transform:translateY(-2px);
+    }
+    #clearBtn{
+        background: linear-gradient(135deg, #d30000, #ff4d4d);
+    }
+    #clearBtn:hover{
+        box-shadow:0 0 15px #ff0000;
+    }
+
+    .small{
+        font-size:13px;
+        color:#6aa3c7;
+        margin-top:10px
+    }
+    pre{
+        white-space:pre-wrap;
+        word-break:break-word;
+        background:#07111f;
+        padding:14px;
+        border-radius:6px;
+        border:1px solid #004d80;
+        color:#bfe9ff;
+        font-size:14px;
+        margin-top:14px;
+    }
+    #copyBtn{
+        margin-top:8px;
+        background: linear-gradient(135deg, #0099ff, #33eeff);
+        display:none;
+    }
+    #output{
+        display: none;
+        background-color: #373737;
+    }
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 18px;
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  textarea {
+    font-size: 16px;
+    width: 100%;
+    height: 160px;
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  button {
+    width: 100%; 
+    padding: 16px;
+    font-size: 19px;
+    border-radius: 12px;
+    margin-top: 6px;
+  }
+
+  #output {
+    font-size: 14px;
+    padding: 12px;
+  }
+  button, textarea {
+    box-shadow: 0 0 14px #00fff5, inset 0 0 12px #008b85;
+  }
+}
+  </style>
+</head>
+<body>
+  <h1>Binary Converter With JQuery</h1>
+  <label>Write your sentence below:</label>
+  <textarea id="inputText" rows="4" placeholder="Right here..."></textarea>
+
+  <div class="row" style="margin-top:8px;">
+    <button id="convertBtn">Convert</button>
+    <button id="convertWithSepBtn">Convert (with a space) separtion</button>
+    <button id="clearBtn">Clear</button>
+  </div>
+
+  <p class="small"><span style="color: red;">*NOTE</span> <br>English words (or letters) will be converted to 8 bit binary, otherwise will be 16 bit.</p>
+
+  <h2 id="resultMsg">Results:</h2>
+  <p id="noText"></p>
+  <pre id="output" aria-live="polite"></pre>
+    <button id="copyBtn">Copy Result</button>
+
+
+  <script>
+      $("#resultMsg").hide();
+      $("#copyBtn").hide();
+
+        $(function(){
+      function textToBinary(str, separator=' ') {
+        const parts = [];
+        for (let i = 0; i < str.length; i++) {
+          const cp = str.codePointAt(i);
+
+          if (cp > 0xffff) i++;
+
+          const bits = (cp <= 0xFF) ? 8 : 16;
+          const bin = cp.toString(2).padStart(bits, '0');
+          parts.push(bin);
+        }
+        return parts.join(separator);
+      }
+
+      
+
+      $('#convertBtn').on('click', function(){
+        const txt = $('#inputText').val();
+        if (!txt) {
+        $('#noText').fadeIn(300).text('There is no text yet!').delay(2000).fadeOut(300);
+          return;
+        }
+        const result = textToBinary(txt, '');
+        $('#output').text(result).fadeIn(300);
+        $("#resultMsg").fadeIn(300);
+        $("#copyBtn").fadeIn(300);
+      });
+
+      $('#convertWithSepBtn').on('click', function(){
+        const txt = $('#inputText').val();
+        if (!txt) {
+        $('#noText').fadeIn(300).text('There is no text yet!').delay(2000).fadeOut(300);
+          return;
+        }
+        const result = textToBinary(txt, ' ');
+        $('#output').text(result).fadeIn(300);
+        $("#resultMsg").fadeIn(300);
+        $("#copyBtn").fadeIn(300);
+      });
+
+      $('#clearBtn').on('click', function(){
+        $('#inputText').val('');
+        $('#output').text('').fadeOut(300);
+        $("#resultMsg").fadeOut(300);
+        $("#copyBtn").fadeOut(300);
+      });
+
+      $('#copyBtn').on('click', function(){
+        const out = $('#output').text();
+        if (!out){
+          $('#noText').fadeIn(300).text("hmmm...How did you click it if the button is hidden?!").delay(2000).fadeOut(300);
+            return;
+        }
+        navigator.clipboard.writeText(out).then(function(){
+          alert('Text has been copied!');
+        }, function(){
+          alert('Copy failed! Try to select the text and copy it manually');
+        });
+      });
+
+      $('#inputText').on('keydown', function(e){
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          $('#convertWithSepBtn').click();
+        }
+      });
+
+      $('#inputText').on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+        });
+    });
+
+  </script>
+</body>
+</html>
