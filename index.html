@@ -22,7 +22,7 @@
         font-size:24px;
         text-align: center;
         margin-bottom:14px;
-        text-shadow: 0 0 10px #00aaff;
+        text-shadow: 0 0 10px #009dff;
 
     }
     label{
@@ -64,7 +64,7 @@
         padding:10px 12px;
         font-size:14px;
         cursor:pointer;
-        background: linear-gradient(135deg, #0066ff, #00d9ff);
+        background: linear-gradient(0deg, #000dbe, #001c4c);
         border:none;
         border-radius:6px;
         color:#fff;
@@ -73,14 +73,14 @@
     }
 
      button:hover{
-        box-shadow:0 0 15px #00aaff;
+        box-shadow:0 7px 15px #00058c;
         transform:translateY(-2px);
     }
     #clearBtn{
-        background: linear-gradient(135deg, #d30000, #ff4d4d);
+        background: linear-gradient(0deg, #d30000, #370000);
     }
     #clearBtn:hover{
-        box-shadow:0 0 15px #ff0000;
+        box-shadow:0 7px 15px #8c0000;
     }
 
     .small{
@@ -101,7 +101,7 @@
     }
     #copyBtn{
         margin-top:8px;
-        background: linear-gradient(135deg, #0099ff, #33eeff);
+        background: linear-gradient(0deg, #000dbe, #001c4c);
         display:none;
     }
     #output{
@@ -147,25 +147,23 @@
     font-size: 14px;
     padding: 12px;
   }
-  button, textarea {
-    box-shadow: 0 0 14px #00fff5, inset 0 0 12px #008b85;
-  }
+  
 }
   </style>
 </head>
 <body>
-  <h1>Binary Converter With JQuery</h1>
+  <h1>Binary Converter</h1>
   <label>Write your sentence below:</label>
   <textarea id="inputText" rows="4" placeholder="Right here..."></textarea>
 
   <div class="row" style="margin-top:8px;">
     <button id="convertBtn">Convert</button>
-    <button id="convertWithSepBtn">Convert (with a space) separtion</button>
+    <button id="convertWithSepBtn">Convert (with a space) separation</button>
     <button id="clearBtn">Clear</button>
   </div>
 
   <p class="small"><span style="color: red;">*NOTE</span> <br>English words (or letters) will be converted to 8 bit binary, otherwise will be 16 bit.</p>
-
+  <br>
   <h2 id="resultMsg">Results:</h2>
   <p id="noText"></p>
   <pre id="output" aria-live="polite"></pre>
@@ -218,10 +216,10 @@
       });
 
       $('#clearBtn').on('click', function(){
+        $("#copyBtn").fadeOut(300);
         $('#inputText').val('');
         $('#output').text('').fadeOut(300);
         $("#resultMsg").fadeOut(300);
-        $("#copyBtn").fadeOut(300);
       });
 
       $('#copyBtn').on('click', function(){
@@ -231,7 +229,7 @@
             return;
         }
         navigator.clipboard.writeText(out).then(function(){
-          alert('Text has been copied!');
+          $("#noText").fadeIn(300).text("Text has been copied!").delay(2000).fadeOut(300);
         }, function(){
           alert('Copy failed! Try to select the text and copy it manually');
         });
